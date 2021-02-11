@@ -120,15 +120,15 @@ public class Authorization {
 
         $$(By.className("android.widget.EditText"))
                 .find(Condition.text("Ток 1"))
-                .sendKeys(getValue(105, 74));
+                .sendKeys(getValue(105, 80));
 
         $$(By.className("android.widget.EditText"))
                 .find(Condition.text("Ток 2"))
-                .sendKeys(getValue(105, 74));
+                .sendKeys(getValue(105, 80));
 
         $$(By.className("android.widget.EditText"))
                 .find(Condition.text("Ток 3"))
-                .sendKeys(getValue(105, 74));
+                .sendKeys(getValue(105, 80));
 
         actions.dragAndDropBy(
                 $(By.id("com.universalelectric.app:id/textViewQuestionNumber")),
