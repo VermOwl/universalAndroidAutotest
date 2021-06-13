@@ -76,8 +76,8 @@ public class Initialization {
         DesiredCapabilities caps = new DesiredCapabilities();
 
         // Set your access credentials
-        caps.setCapability("browserstack.user", "stepanzavadskiy2");
-        caps.setCapability("browserstack.key", "unASUrndM731cKcyXBGy");
+        caps.setCapability("browserstack.user", "user");
+        caps.setCapability("browserstack.key", "key");
 
         // Set URL of the application under test
         caps.setCapability("app", "bs://<app-id>");
