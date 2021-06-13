@@ -6,7 +6,9 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import example.system.Initialization;
 import io.appium.java_client.android.AndroidElement;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -17,16 +19,10 @@ import java.net.MalformedURLException;
 import org.openqa.selenium.interactions.Actions;
 
 
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Authorization {
 
     Initialization init = new Initialization();
-
-    int range_vibration = (3 - 0) + 0;
-    int range_amperage = (104 - 75 + 1) + 75;
-    int range_temperature = (29 - (-50) + 1 ) + (-50);
-    int range_ibp_zu_tvu_1 = (413 - 305 + 1) + 305;
-    int range_ibp_zu_tvu_2 = (250 - 189 + 1) + 189;
 
     public String getValue(int max, int min){
         double random_double = Math.random() * (max - min + 1) + min;
@@ -35,8 +31,25 @@ public class Authorization {
         return final_value;
     }
 
+
+    public void createDefect() throws MalformedURLException{
+
+        $$(By.id("com.universalelectric.app:id/textViewHasDefect"))
+                .find(Condition.text("Есть дефект"))
+                .click();
+        $(By.id("com.universalelectric.app:id/radioGroupDefectCauses")).click();
+        $(By.id("com.universalelectric.app:id/buttonContinue")).click();
+        $(By.id("com.universalelectric.app:id/editTextComment")).sendKeys("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. ");
+        $(By.id("com.universalelectric.app:id/buttonAttachPhoto")).click();
+        $(By.id("com.universalelectric.app:id/buttonMakePhoto")).click();
+        $(By.id("com.android.camera2:id/shutter_button")).click();
+        $(By.id("com.android.camera2:id/done_button")).click();
+        $(By.id("com.universalelectric.app:id/buttonSaveAndComplete")).click();
+        $(By.id("com.universalelectric.app:id/buttonConfirm")).click();
+    }
+
     @Test
-    public void loginForm() throws MalformedURLException {
+    public void testALoginForm() throws MalformedURLException {
 
         WebDriverRunner.setWebDriver(init.initialization());
 
@@ -72,10 +85,12 @@ public class Authorization {
         $$(By.id("com.universalelectric.app:id/buttonBypass"))
                 .find(Condition.text("Начать обход"))
                 .click();
+
+        WebDriverRunner.closeWebDriver();
     }
 
     @Test
-    public void testFirstEquipment() throws MalformedURLException{
+    public void testBFirstEquipment() throws MalformedURLException{
 
         WebDriverRunner.setWebDriver(init.connectToDevice());
 
@@ -120,15 +135,15 @@ public class Authorization {
 
         $$(By.className("android.widget.EditText"))
                 .find(Condition.text("Ток 1"))
-                .sendKeys(getValue(105, 80));
+                .sendKeys(getValue(104, 80));
 
         $$(By.className("android.widget.EditText"))
                 .find(Condition.text("Ток 2"))
-                .sendKeys(getValue(105, 80));
+                .sendKeys(getValue(104, 80));
 
         $$(By.className("android.widget.EditText"))
                 .find(Condition.text("Ток 3"))
-                .sendKeys(getValue(105, 80));
+                .sendKeys(getValue(104, 80));
 
         actions.dragAndDropBy(
                 $(By.id("com.universalelectric.app:id/textViewQuestionNumber")),
@@ -199,12 +214,175 @@ public class Authorization {
                 .sendKeys(getValue(187, 253));
 
         $(By.id("com.universalelectric.app:id/buttonComplete")).click();
-        $(By.id("com.universalelectric.app:id/profileFragment")).click();
-        $(By.id("com.universalelectric.app:id/buttonSync")).click();
+//        $(By.id("com.universalelectric.app:id/profileFragment")).click();
+//        $(By.id("com.universalelectric.app:id/buttonSync")).click();
+
+        WebDriverRunner.closeWebDriver();
     }
 
-    //@Test
-    public void test() throws MalformedURLException {
+    @Test
+    public void testCSecondEquipment() throws MalformedURLException{
+
+        WebDriverRunner.setWebDriver(init.connectToDeviceWithCamera());
+
+        AndroidDriver driver = (AndroidDriver) WebDriverRunner.getWebDriver();
+        Actions actions = new Actions(driver);
+
+        $$(By.id("com.universalelectric.app:id/textViewTabSubtitle"))
+                .find(Condition.text(("Не проверено")))
+                .click();
+
+        actions.clickAndHold($$(By.id("com.universalelectric.app:id/buttonBypass"))
+                .find(Condition.text("Начать обход"))).perform();
+
+        actions.dragAndDropBy(
+                $(By.id("com.universalelectric.app:id/textViewQuestionNumber")),
+                0,
+                -500
+        ).perform();
+
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("Вибродиагностика 1"))
+                .sendKeys(getValue(6, 10));
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("Вибродиагностика 2"))
+                .sendKeys(getValue(6, 10));
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("Вибродиагностика 3"))
+                .sendKeys(getValue(6, 10));
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("Вибродиагностика 4"))
+                .sendKeys(getValue(6, 10));
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("Вибродиагностика 5"))
+                .sendKeys(getValue(6, 10));
+
+        createDefect();
+
+        actions.dragAndDropBy(
+                $(By.id("com.universalelectric.app:id/textViewQuestionNumber")),
+                0,
+                -200
+        ).perform();
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("Стробоскоп 1"))
+                .sendKeys(getValue(3000, 7000));
+
+        actions.dragAndDropBy(
+                $(By.id("com.universalelectric.app:id/textViewQuestionNumber")),
+                0,
+                -600
+        ).perform();
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("Ток 1"))
+                .sendKeys(getValue(250, 105));
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("Ток 2"))
+                .sendKeys(getValue(250, 105));
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("Ток 3"))
+                .sendKeys(getValue(250, 105));
+
+        createDefect();
+
+        actions.dragAndDropBy(
+                $(By.id("com.universalelectric.app:id/textViewQuestionNumber")),
+                0,
+                -500
+        ).perform();
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("Т-элемента 1"))
+                .sendKeys(getValue(120, 50));
+
+        createDefect();
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("Т-окр.ср. 1"))
+                .sendKeys(getValue(120, 50));
+
+        createDefect();
+
+        actions.dragAndDropBy(
+                $(By.id("com.universalelectric.app:id/textViewQuestionNumber")),
+                0,
+                -600
+        ).perform();
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("ИБП/ЗУ/ТВУ 1"))
+                .sendKeys(getValue(323, 250));
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("ИБП/ЗУ/ТВУ 2"))
+                .sendKeys(getValue(500, 437));
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("ИБП/ЗУ/ТВУ 3"))
+                .sendKeys(getValue(500, 437));
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("ИБП/ЗУ/ТВУ 4"))
+                .sendKeys(getValue(187, 140));
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("ИБП/ЗУ/ТВУ 5"))
+                .sendKeys(getValue(187, 140));
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("ИБП/ЗУ/ТВУ 6"))
+                .sendKeys(getValue(300, 253));
+
+        createDefect();
+
+        actions.dragAndDropBy(
+                $(By.id("com.universalelectric.app:id/textViewQuestionNumber")),
+                0,
+                -700
+        ).perform();
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("ЗУ/ТВУ на выходе 1"))
+                .sendKeys(getValue(150, 106));
+
+        createDefect();
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("ИБП на входе 1"))
+                .sendKeys(getValue(350, 253));
+
+        createDefect();
+
+        actions.dragAndDropBy(
+                $(By.id("com.universalelectric.app:id/textViewQuestionNumber")),
+                0,
+                -1000
+        ).perform();
+
+        $$(By.className("android.widget.EditText"))
+                .find(Condition.text("ИБП на выходе 1"))
+                .sendKeys(getValue(350, 253));
+
+        createDefect();
+
+        $(By.id("com.universalelectric.app:id/buttonComplete")).click();
+//        $(By.id("com.universalelectric.app:id/profileFragment")).click();
+//        $(By.id("com.universalelectric.app:id/buttonSync")).click();
+
+        WebDriverRunner.closeWebDriver();
+    }
+
+    @Test
+    public void testYSync() throws MalformedURLException {
 
         WebDriverRunner.setWebDriver(init.connectToDevice());
 
@@ -213,7 +391,9 @@ public class Authorization {
 
         $(By.id("com.universalelectric.app:id/profileFragment")).click();
         $(By.id("com.universalelectric.app:id/buttonSync")).click();
-        int i = 0;
+
+        WebDriverRunner.closeWebDriver();
     }
+
 
 }
